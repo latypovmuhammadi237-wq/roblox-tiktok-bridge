@@ -49,4 +49,17 @@ app.all('/reset-scores-clear', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+// Универсальный запрос для пацанов (+20 очков)
+app.all('/insta-boys-secret', (req, res) => {
+    scores.boys += 20;
+    res.json(scores);
+});
+
+// Универсальный запрос для девчонок (+20 очков)
+app.all('/insta-girls-secret', (req, res) => {
+    scores.girls += 20;
+    res.json(scores);
+});
+
+app.listen(PORT, () => console.log(`Сервер успешно работает!`));
 app.listen(PORT, () => console.log(`Сервер успешно работает!`));

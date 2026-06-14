@@ -3,52 +3,44 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 let scores = {
     boys: 0,
     girls: 0
 };
 
-// 1. ЗАЩИТА: Блокируем запросы браузера на иконку
-app.get('/favicon.ico', (req, res) => res.status(204).end());
-
-// 2. СТРАНИЦА СЧЕТА: Сюда заходит твой скрипт из Roblox.
-// Он просто читает текущие цифры 'boys' и 'girls'. При обновлении ничего не накручивается!
+// 1. Показ счета для Roblox и для тебя
 app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
-// 3. ОБЫЧНЫЕ ТРИГГЕРЫ (+1 очко)
+// 2. Обычные триггеры Tikfinity (+1 очко)
 app.all('/add-point-trigger-boys-secret', (req, res) => {
-    scores.boys++;
+    scores.boys += 1;
     res.json({ success: true, total: scores.boys });
 });
 
 app.all('/add-point-trigger-girls-secret', (req, res) => {
-    scores.girls++;
+    scores.girls += 1;
     res.json({ success: true, total: scores.girls });
 });
 
-// 4. МЕГА ТРИГГЕРЫ (+20 очков за один раз)
+// 3. Мега триггеры Tikfinity (+20 очков)
 app.all('/insta-boys-secret', (req, res) => {
-    scores.boys += 20; // Сразу добавляем 20 очков мальчикам
-    console.log(`🔥 Insta Boys! Добавлено +20 очков. Всего: ${scores.boys}`);
+    scores.boys += 20;
     res.json({ success: true, total: scores.boys });
 });
 
 app.all('/insta-girls-secret', (req, res) => {
-    scores.girls += 20; // Сразу добавляем 20 очков девочкам
-    console.log(`🔥 Insta Girls! Добавлено +20 очков. Всего: ${scores.girls}`);
+    scores.girls += 20;
     res.json({ success: true, total: scores.girls });
 });
 
-// 5. СБРОС СЧЕТА
+// 4. Сброс счета
 app.all('/reset-scores-clear', (req, res) => {
     scores.boys = 0;
     scores.girls = 0;
-    res.send('Счет сброшен на 0:0');
+    res.send('Сброшено!');
 });
 
 const PORT = process.env.PORT || 3000;

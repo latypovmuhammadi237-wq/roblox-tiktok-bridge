@@ -9,12 +9,17 @@ let scores = {
     girls: 0
 };
 
-// 1. Показ счета для Roblox и для тебя
+// ТЕПЕРЬ ГЛАВНАЯ СТРАНИЦА ТОЖЕ ПОКАЗЫВАЕТ СЧЕТ! Никаких ошибок больше не будет.
+app.get('/', (req, res) => {
+    res.json(scores);
+});
+
+// Дублируем для Roblox (чтобы старые скрипты не сломались)
 app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
-// 2. Обычные триггеры Tikfinity (+1 очко)
+// Обычные триггеры Tikfinity (+1 очко)
 app.all('/add-point-trigger-boys-secret', (req, res) => {
     scores.boys += 1;
     res.json({ success: true, total: scores.boys });
@@ -25,7 +30,7 @@ app.all('/add-point-trigger-girls-secret', (req, res) => {
     res.json({ success: true, total: scores.girls });
 });
 
-// 3. Мега триггеры Tikfinity (+20 очков)
+// Мега триггеры Tikfinity (+20 очков)
 app.all('/insta-boys-secret', (req, res) => {
     scores.boys += 20;
     res.json({ success: true, total: scores.boys });
@@ -36,7 +41,7 @@ app.all('/insta-girls-secret', (req, res) => {
     res.json({ success: true, total: scores.girls });
 });
 
-// 4. Сброс счета
+// Сброс счета
 app.all('/reset-scores-clear', (req, res) => {
     scores.boys = 0;
     scores.girls = 0;

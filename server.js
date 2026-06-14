@@ -14,26 +14,37 @@ let scores = {
 // 1. ЗАЩИТА: Блокируем запросы браузера на иконку
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-// 2. СТРАНИЦА СЧЕТА: Сюда заходит Roblox и ты сам.
-// Этот адрес ТОЛЬКО ПОКАЗЫВАЕТ счет. При его обновлении ничего не накрутится!
+// 2. СТРАНИЦА СЧЕТА: Сюда заходит твой скрипт из Roblox.
+// Он просто читает текущие цифры 'boys' и 'girls'. При обновлении ничего не накручивается!
 app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
-// 3. УНИВЕРСАЛЬНЫЕ СЕКРЕТНЫЕ ССЫЛКИ ДЛЯ ТИКФИНИТИ (Принимают и GET, и POST)
+// 3. ОБЫЧНЫЕ ТРИГГЕРЫ (+1 очко)
 app.all('/add-point-trigger-boys-secret', (req, res) => {
     scores.boys++;
-    console.log(`Мальчикам добавлено очко! Всего: ${scores.boys}`);
     res.json({ success: true, total: scores.boys });
 });
 
 app.all('/add-point-trigger-girls-secret', (req, res) => {
     scores.girls++;
-    console.log(`Девочкам добавлено очко! Всего: ${scores.girls}`);
     res.json({ success: true, total: scores.girls });
 });
 
-// Сброс счета перед стримом (если нужно, просто перейди по этой ссылке в браузере)
+// 4. МЕГА ТРИГГЕРЫ (+20 очков за один раз)
+app.all('/insta-boys-secret', (req, res) => {
+    scores.boys += 20; // Сразу добавляем 20 очков мальчикам
+    console.log(`🔥 Insta Boys! Добавлено +20 очков. Всего: ${scores.boys}`);
+    res.json({ success: true, total: scores.boys });
+});
+
+app.all('/insta-girls-secret', (req, res) => {
+    scores.girls += 20; // Сразу добавляем 20 очков девочкам
+    console.log(`🔥 Insta Girls! Добавлено +20 очков. Всего: ${scores.girls}`);
+    res.json({ success: true, total: scores.girls });
+});
+
+// 5. СБРОС СЧЕТА
 app.all('/reset-scores-clear', (req, res) => {
     scores.boys = 0;
     scores.girls = 0;

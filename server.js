@@ -62,4 +62,3 @@ app.all('/insta-girls-secret', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Сервер успешно работает!`));
-app.listen(PORT, () => console.log(`Сервер успешно работает!`));

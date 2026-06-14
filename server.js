@@ -25,3 +25,5 @@ app.get('/scores', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Сервер работает на порту ${PORT}`));
+// Игнорируем запросы браузера на иконку, чтобы они не накручивали очки мальчикам!
+app.get('/favicon.ico', (req, res) => res.status(204).end());

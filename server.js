@@ -3,42 +3,38 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // Включаем поддержку JSON-данных
 
 let scores = {
     boys: 0,
     girls: 0
 };
 
-// 1. ЗАЩИТА: Игнорируем запросы на иконку вкладки
+// 1. ЗАЩИТА: Полностью блокируем скрытые запросы браузера на иконку вкладки
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-// 2. ЧТЕНИЕ СЧЕТА: Сюда заходит Roblox и ты сам через браузер. 
-// При обновлении этой страницы счет БОЛЬШЕ НЕ СМОЖЕТ увеличиться!
+// 2. СТРАНИЦА СЧЕТА: Сюда заходит твой Roblox и ты сам, чтобы проверить цифры.
+// Теперь этот адрес ТУПО ПОКАЗЫВАЕТ счет. Сколько бы ты его ни обновлял, очки НЕ ПРИБАВЯТСЯ!
 app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
-// 3. СБРОС СЧЕТА (Если захочешь обнулить перед стримом, просто перейди по этой ссылке)
+// 3. СЕКРЕТНЫЕ ССЫЛКИ ДЛЯ ТИКФИНИТИ (Браузер о них не знает, поэтому ничего не закеширует на главной странице)
+app.get('/add-point-trigger-boys-secret', (req, res) => {
+    scores.boys++;
+    res.send('Очко мальчикам! Всего: ' + scores.boys);
+});
+
+app.get('/add-point-trigger-girls-secret', (req, res) => {
+    scores.girls++;
+    res.send('Очко девочкам! Всего: ' + scores.girls);
+});
+
+// 4. СБРОС СЧЕТА: Если захочешь обнулить счет перед началом стрима
 app.get('/reset-scores-clear', (req, res) => {
     scores.boys = 0;
     scores.girls = 0;
     res.send('Счет успешно сброшен на 0:0!');
 });
 
-// 4. ДОБАВЛЕНИЕ ОЧКОВ: Перевели на метод POST, чтобы браузер не накручивал их при обновлении
-app.post('/boys', (req, res) => {
-    scores.boys++;
-    res.json({ success: true, team: 'boys', total: scores.boys });
-});
-
-app.post('/girls', (req, res) => {
-    scores.girls++;
-    res.json({ success: true, team: 'girls', total: scores.girls });
-});
-
-// Запуск сервера
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Сервер успешно запущен на порту ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Сервер работает на порту ${PORT}`));

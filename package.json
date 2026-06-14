@@ -1,0 +1,12 @@
+{
+  "name": "roblox-tiktok-bridge",
+  "version": "1.0.0",
+  "description": "Bridge for Roblox and Tikfinity",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -9,7 +9,7 @@ let scores = {
     girls: 0
 };
 
-// ТЕПЕРЬ ГЛАВНАЯ СТРАНИЦА ТОЖЕ ПОКАЗЫВАЕТ СЧЕТ! Никаких ошибок больше не будет.
+// Главная страница показывает весь счет
 app.get('/', (req, res) => {
     res.json(scores);
 });
@@ -19,26 +19,26 @@ app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
-// Обычные триггеры Tikfinity (+1 очко)
+// Обычные триггеры Tikfinity (+1 очко) — сделаны всеядными (app.all)
 app.all('/add-point-trigger-boys-secret', (req, res) => {
     scores.boys += 1;
-    res.json({ success: true, total: scores.boys });
+    res.json(scores);
 });
 
 app.all('/add-point-trigger-girls-secret', (req, res) => {
     scores.girls += 1;
-    res.json({ success: true, total: scores.girls });
+    res.json(scores);
 });
 
-// Мега триггеры Tikfinity (+20 очков)
+// МЕГА ТРИГГЕРЫ ДЛЯ TIKFINITY (+20 очков) — теперь в одном экземпляре и всеядные
 app.all('/insta-boys-secret', (req, res) => {
     scores.boys += 20;
-    res.json({ success: true, total: scores.boys });
+    res.json(scores);
 });
 
 app.all('/insta-girls-secret', (req, res) => {
     scores.girls += 20;
-    res.json({ success: true, total: scores.girls });
+    res.json(scores);
 });
 
 // Сброс счета
@@ -49,16 +49,4 @@ app.all('/reset-scores-clear', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-// Универсальный запрос для пацанов (+20 очков)
-app.all('/insta-boys-secret', (req, res) => {
-    scores.boys += 20;
-    res.json(scores);
-});
-
-// Универсальный запрос для девчонок (+20 очков)
-app.all('/insta-girls-secret', (req, res) => {
-    scores.girls += 20;
-    res.json(scores);
-});
-
 app.listen(PORT, () => console.log(`Сервер успешно работает!`));
